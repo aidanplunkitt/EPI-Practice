@@ -1,17 +1,19 @@
 from test_framework import generic_test
 
-def parity_no_lut(x: int) -> int:
-    parity = 0
-    while x:
-        parity ^= 1
-        # hack to reduce time complexity from O(n) where n is the num of bits, 
-        # to O(k) where k is the num of 1s in binary string
-        x &= x - 1
+# O(log n) improvement
+def parity_no_lut_logn(x: int) -> int:
+    # assuming 64-bit argument
+    x ^= x >> 32
+    x ^= x >> 16
+    x ^= x >> 8
+    x ^= x >> 4
+    x ^= x >> 2
+    x ^= x >> 1
 
-    return parity
+    return x & 1
 
 # build 64K-entry LUT for better performance on sequences of large numbers
-LUT_16BIT = [parity_no_lut(x) for x in range(pow(2,16))]
+LUT_16BIT = [parity_no_lut_logn(x) for x in range(pow(2,16))]
    
 MASK_SIZE = 16
 BIT_MASK = 0xFFFF
