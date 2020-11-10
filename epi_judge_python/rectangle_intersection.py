@@ -7,8 +7,19 @@ Rect = collections.namedtuple('Rect', ('x', 'y', 'width', 'height'))
 
 
 def intersect_rectangle(r1: Rect, r2: Rect) -> Rect:
-    # TODO - you fill in here.
-    return Rect(0, 0, 0, 0)
+    # idea: overlapping schedule problem in two dimensions
+
+    x1, x2 = max(r1.x, r2.x), min(r1.x + r1.width, r2.x + r2.width)
+    y1, y2 = max(r1.y, r2.y), min(r1.y + r1.height, r2.y + r2.height)
+
+    # if the smaller end value is geq than larger start value, they overlap
+    if x2 >= x1:
+        # do the same but for the y-axis
+        if y2 >= y1:
+            # overlapping non-empty rectangle
+            return Rect(x1, y1, x2 - x1, y2 - y1)
+
+    return Rect(0, 0, -1, -1)
 
 
 def intersect_rectangle_wrapper(r1, r2):
