@@ -8,12 +8,15 @@ def power(x: float, y: int) -> float:
         pass
     elif y > 0:
         while y:
-            result *= x
-            y -= 1
+            if y & 1: result *= x
+            x *= x
+            y >>= 1
     else:
+        y *= -1
         while y:
-            result /= x
-            y += 1
+            if y & 1: result /= x
+            x *= x
+            y >>= 1
         
     return result
 
