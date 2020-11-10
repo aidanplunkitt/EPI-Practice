@@ -4,19 +4,15 @@ from test_framework import generic_test
 def power(x: float, y: int) -> float:
     result = 1.0
 
-    if y == 0:
-        pass
-    elif y > 0:
-        while y:
-            if y & 1: result *= x
-            x *= x
-            y >>= 1
-    else:
+    # handle negative powers here to simplify loop logic
+    if y < 0:
+        x = 1.0 / x
         y *= -1
-        while y:
-            if y & 1: result /= x
-            x *= x
-            y >>= 1
+
+    while y:
+        if y & 1: result *= x
+        x *= x
+        y >>= 1
         
     return result
 
