@@ -13,17 +13,18 @@ def dutch_flag_partition(pivot_index: int, A: List[int]) -> None:
 
     pivot = A[pivot_index]
 
-    smaller = 0
-    for i in range(len(A)):
-        if A[i] < pivot:
-            A[i], A[smaller] = A[smaller], A[i]
-            smaller += 1
+    smaller, equal, larger = -1, 0, len(A)
 
-    larger = len(A) - 1
-    for i in reversed(range(len(A))):
-        if A[i] > pivot:
-            A[i], A[larger] = A[larger], A[i]
+    while equal < larger:
+        if A[equal] < pivot:
+            smaller += 1
+            A[equal], A[smaller] = A[smaller], A[equal]
+            equal += 1
+        elif A[equal] == pivot:
+            equal += 1
+        else: # A[equal] > pivot
             larger -= 1
+            A[equal], A[larger] = A[larger], A[equal]
 
     return
 
