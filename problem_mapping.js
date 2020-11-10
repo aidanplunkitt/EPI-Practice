@@ -432,7 +432,7 @@ problem_mapping = {
                 "total": 51
             },
             "Python: spiral_ordering.py": {
-                "passed": 0,
+                "passed": 3,
                 "total": 51
             }
         },
