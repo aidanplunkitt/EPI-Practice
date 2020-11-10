@@ -14,12 +14,10 @@ WORD_SIZE = 16
 
 def reverse_bits(x: int) -> int:
     # assume 64-bit arg
-    result = 0
-    for _ in range(4):
-        result = (result << WORD_SIZE) + LUT_16[x & MASK]
-        x >>= WORD_SIZE
-
-    return result
+    return  LUT_16[x & MASK] << (3 * WORD_SIZE) | \
+            LUT_16[(x >> WORD_SIZE) & MASK] << (2 * WORD_SIZE) | \
+            LUT_16[(x >> WORD_SIZE * 2) & MASK] << WORD_SIZE | \
+            LUT_16[(x >> WORD_SIZE * 3) & MASK]
 
 
 if __name__ == '__main__':
