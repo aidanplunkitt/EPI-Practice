@@ -14,12 +14,13 @@ def matrix_in_spiral_order(square_matrix: List[List[int]]) -> List[int]:
         # right
         ordering += [row[n-i-1] for row in square_matrix[i+1:n-i-1]]
         # bottom
-        ordering += reversed(square_matrix[n-i-1][i:n])
+        ordering += reversed(square_matrix[n-i-1][i:n-i])
         # left
-        ordering += reversed([row[i] for row in square_matrix[i+1:n+i-1]])
+        ordering += reversed([row[i] for row in square_matrix[i+1:n-i-1]])
 
+    # handle single-elem center in odd-sized matrices
     if n % 2 != 0:
-        ordering += square_matrix[n//2][n//2]
+        ordering.append(square_matrix[n//2][n//2])
 
     return ordering
 
