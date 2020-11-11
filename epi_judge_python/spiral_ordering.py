@@ -4,22 +4,25 @@ from test_framework import generic_test
 
 
 def matrix_in_spiral_order(square_matrix: List[List[int]]) -> List[int]:
-    spiral_ordering = []
+    SHIFT = ((0,1), (1,0), (0,-1), (-1,0))
+    direction = x = y = 0
+    ordering = []
 
-    def matrix_layer_in_clockwise(offset):
-        # if at midpoint of matrix of odd dimension
-        if offset == len(square_matrix) - offset - 1:
-            spiral_ordering.append(square_matrix[offset][offset])
+    for _ in range(len(square_matrix)**2):
+        ordering.append(square_matrix[x][y])
+        square_matrix[x][y] = 0
 
-        spiral_ordering.extend(square_matrix[offset][offset:-1 - offset])
-        spiral_ordering.extend(list(zip(*square_matrix))[-1 - offset][offset:-1-offset])
-        spiral_ordering.extend(square_matrix[-1 - offset][-1 - offset:offset:-1])
-        spiral_ordering.extend(list(zip(*square_matrix))[offset][-1 - offset:offset:-1])
+        next_x, next_y = x + SHIFT[direction][0], y + SHIFT[direction][1]
+        if (next_x not in range(len(square_matrix)) \
+            or next_y not in range((len(square_matrix))) \
+            or square_matrix[next_x][next_y] == 0):
 
-    for n in range((len(square_matrix) + 1) // 2):
-        matrix_layer_in_clockwise(n)
-    
-    return spiral_ordering
+            direction = (direction + 1) & 3
+            next_x, next_y = x + SHIFT[direction][0], y + SHIFT[direction][1]
+            
+        x, y = next_x, next_y
+
+    return ordering
 
 if __name__ == '__main__':
     exit(
