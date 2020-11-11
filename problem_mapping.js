@@ -208,7 +208,7 @@ problem_mapping = {
                 "total": 505
             },
             "Python: int_as_array_increment.py": {
-                "passed": 0,
+                "passed": 505,
                 "total": 505
             }
         },
