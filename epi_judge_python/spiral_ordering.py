@@ -4,25 +4,22 @@ from test_framework import generic_test
 
 
 def matrix_in_spiral_order(square_matrix: List[List[int]]) -> List[int]:
-    n = len(square_matrix)
-    if n == 1: return square_matrix[0]
+    spiral_ordering = []
 
-    ordering = []
-    for i in range(n // 2):
-        # top
-        ordering += square_matrix[i][i:n-i]
-        # right
-        ordering += [row[n-i-1] for row in square_matrix[i+1:n-i-1]]
-        # bottom
-        ordering += reversed(square_matrix[n-i-1][i:n-i])
-        # left
-        ordering += reversed([row[i] for row in square_matrix[i+1:n-i-1]])
+    def matrix_layer_in_clockwise(offset):
+        # if at midpoint of matrix of odd dimension
+        if offset == len(square_matrix) - offset - 1:
+            spiral_ordering.append(square_matrix[offset][offset])
 
-    # handle single-elem center in odd-sized matrices
-    if n % 2 != 0:
-        ordering.append(square_matrix[n//2][n//2])
+        spiral_ordering.extend(square_matrix[offset][offset:-1 - offset])
+        spiral_ordering.extend(list(zip(*square_matrix))[-1 - offset][offset:-1-offset])
+        spiral_ordering.extend(square_matrix[-1 - offset][-1 - offset:offset:-1])
+        spiral_ordering.extend(list(zip(*square_matrix))[offset][-1 - offset:offset:-1])
 
-    return ordering
+    for n in range((len(square_matrix) + 1) // 2):
+        matrix_layer_in_clockwise(n)
+    
+    return spiral_ordering
 
 if __name__ == '__main__':
     exit(
