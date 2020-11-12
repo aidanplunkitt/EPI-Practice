@@ -16,3 +16,8 @@ C0          C1          C2          C3 *         C4
 18.1        18.7        18.2        18.3        18.5
 19.3        19.6        19.8        19.9        20.9
 20.13       20.15       20.16       20.1        20.2
+
+TODO 
+    5.17
+    all C4 problems
+    then remaining problems from each chapter
