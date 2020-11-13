@@ -3,13 +3,44 @@ from test_framework.test_failure import TestFailure
 
 
 def int_to_string(x: int) -> str:
-    # TODO - you fill in here.
-    return '0'
+    s = ''
+    signed = False
+
+    if x == 0: return '0'
+
+    if x < 0:
+        signed = True
+        x *= -1
+
+    while x:
+        x, c = divmod(x, 10)
+        s += (chr(ord('0') + c))
+
+    if signed: s += '-'
+
+    return s[::-1]
+
+    
 
 
 def string_to_int(s: str) -> int:
-    # TODO - you fill in here.
-    return 0
+    i = 0
+    val = 0
+    signedness = 1
+    if s[i] == '-':
+        signedness = -1
+        i = 1
+    
+    if s[i] == '+':
+        i = 1
+
+    while i < len(s):
+        val = val * 10 + (ord(s[i]) - ord('0'))
+        i += 1
+
+    return val * signedness
+
+    
 
 
 def wrapper(x, s):
