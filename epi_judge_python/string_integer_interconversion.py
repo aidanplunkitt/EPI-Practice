@@ -1,46 +1,28 @@
 from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 
+import functools
+import string
 
 def int_to_string(x: int) -> str:
-    s = ''
-    signed = False
-
-    if x == 0: return '0'
-
+    is_negative = False
     if x < 0:
-        signed = True
-        x *= -1
+        x, is_negative = -x, True
 
-    while x:
-        x, c = divmod(x, 10)
-        s += (chr(ord('0') + c))
+    s = []
+    # doing while True instead of while x covers edge case of argument 0 given
+    # essentially a do-while now, as x==0 checked at end of loop rather than start
+    while True:
+        s.append(chr(ord('0') + x % 10))
+        x //= 10
+        if x == 0:
+            break
 
-    if signed: s += '-'
-
-    return s[::-1]
-
-    
+    return ('-' if is_negative else '') + ''.join(reversed(s))
 
 
 def string_to_int(s: str) -> int:
-    i = 0
-    val = 0
-    signedness = 1
-    if s[i] == '-':
-        signedness = -1
-        i = 1
-    
-    if s[i] == '+':
-        i = 1
-
-    while i < len(s):
-        val = val * 10 + (ord(s[i]) - ord('0'))
-        i += 1
-
-    return val * signedness
-
-    
+    return functools.reduce(lambda running_sum, c: running_sum * 10 + string.digits.index(c), s[s[0] == '-' or s[0] == '+':], 0) * (-1 if s[0] == '-' else 1)
 
 
 def wrapper(x, s):
