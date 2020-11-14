@@ -2,8 +2,8 @@ from test_framework import generic_test
 
 
 def is_palindromic(s: str) -> bool:
-    # TODO - you fill in here.
-    return True
+    stripped = [i.lower() for i in s if i.isalpha()]
+    return all(stripped[i] == stripped[~i] for i in range(len(stripped) // 2))
 
 
 if __name__ == '__main__':
