@@ -1,40 +1,18 @@
 from test_framework import generic_test
-
+import string
+import functools
 
 def convert_base(num_as_string: str, b1: int, b2: int) -> str:
-    i = 0
-    signed = False
+    def construct_from_base(num_as_int, base):
+        return ('' if num_as_int == 0 else
+                construct_from_base(num_as_int // base, base) + \
+                    string.hexdigits[num_as_int % base].upper())
 
-    if num_as_string == '0': return num_as_string    
-    if num_as_string[0] == '+':
-        i = 1
-    elif num_as_string[0] == '-':
-        signed = True
-        i = 1
-    
-    x = 0
-    while i < len(num_as_string):
-        tmp = 0
-        if num_as_string[i] in 'ABCDEF':
-            tmp = 10 + ord(num_as_string[i]) - ord('A')
-        else:
-            tmp = int(num_as_string[i])
-        x = x * b1 + tmp
-        i += 1
-
-    #convert from base 10 to b2
-    result = ''
-    while x:
-        x, digit = divmod(x, b2)
-        if digit > 9:
-            digit = chr(ord('A') + digit - 10)
-        else:
-            digit = str(digit)
-        result += digit
-
-    result = ('-' if signed else '') + result[::-1]
-    return result
-
+    is_negative = num_as_string[0] == '-'
+    # convert from b1 to base 10
+    num_as_int = functools.reduce(lambda x, c: x * b1 + string.hexdigits.index(c.lower()), num_as_string[is_negative:], 0)
+    # convert from base 10 to b2
+    return ('-' if is_negative else '') + ('0' if num_as_int == 0 else construct_from_base(num_as_int, b2))
 
 if __name__ == '__main__':
     exit(

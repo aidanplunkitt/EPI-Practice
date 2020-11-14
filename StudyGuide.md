@@ -20,5 +20,6 @@ C0          C1          C2          C3 *         C4
 TODO 
     5.17
     5.9 p^2 solution
+    6.2 rewrite construct_from_base iteratively rather than recursively
     all C4 problems
     then remaining problems from each chapter
