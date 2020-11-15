@@ -2,17 +2,20 @@ from typing import List
 
 from test_framework import generic_test, test_utils
 
-import string
-
-phone_map = [['0'], ['1'], ['A','B','C'], ['D','E','F'], ['G','H','I'], ['J','K','L'], ['M','N','O'], ['P','Q','R','S'], ['T','U','V'], ['W','X','Y','Z']]
+MAPPING = ('0','1','ABC','DEF','GHI','JKL','MNO','PQRS','TUV','WXYZ')
 
 def phone_mnemonic(phone_number: str) -> List[str]:
-    num = string.digits.index(phone_number[-1])
+    def phone_mnemonic_helper(digit):
+        if digit == len(phone_number):
+            mnemonics.append(''.join(partial_mnemonic))
+        else:
+            for c in MAPPING[int(phone_number[digit])]:
+                partial_mnemonic[digit] = c
+                phone_mnemonic_helper(digit + 1)
 
-    if len(phone_number) == 1:
-        return phone_map[num]
-
-    return [A + b for A in phone_mnemonic(phone_number[:-1]) for b in phone_map[num]]    
+    mnemonics, partial_mnemonic = [], [0] * len(phone_number)
+    phone_mnemonic_helper(0)
+    return mnemonics
 
 
 if __name__ == '__main__':
