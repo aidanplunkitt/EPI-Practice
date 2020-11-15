@@ -1988,7 +1988,7 @@ problem_mapping = {
                 "total": 102
             },
             "Python: phone_number_mnemonic.py": {
-                "passed": 0,
+                "passed": 102,
                 "total": 102
             }
         },
