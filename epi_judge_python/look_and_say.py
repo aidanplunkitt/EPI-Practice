@@ -2,25 +2,22 @@ from test_framework import generic_test
 
 
 def look_and_say(n: int) -> str:
-    if n == 0: return ''
-    if n == 1: return '1'
-    if n == 2: return '11'
-    
-    a, b = [], [1, 1]
-    j = 1
-    for _ in range(n-2):
-        a, b = b, []
-        j = 1
-        for i in range(1,len(a)):
-            if a[i] == a[i-1]:
-                j += 1
-            else:
-                b.extend([j, a[i-1]])
-                j = 1
-        b.extend([j, a[-1]])
+    def next_number(s):
+        result, i = [], 0
+        while i < len(s):
+            count = 1
+            while i + 1 < len(s) and s[i] == s[i+1]:
+                i += 1
+                count += 1
+            result.append(str(count) + s[i])
+            i += 1
 
-    return ''.join(str(x) for x in b)
+        return ''.join(result)
 
+    s = '1'
+    for _ in range(1, n):
+        s = next_number(s)
+    return s
 
 if __name__ == '__main__':
     exit(
