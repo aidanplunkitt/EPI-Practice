@@ -8,7 +8,11 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def has_cycle(head: ListNode) -> Optional[ListNode]:
-    # TODO - you fill in here.
+    dhead = head
+    while dhead.next and dhead.next.next:
+        head = head.next
+        dhead = dhead.next.next
+        if head is dhead: return head
     return None
 
 
