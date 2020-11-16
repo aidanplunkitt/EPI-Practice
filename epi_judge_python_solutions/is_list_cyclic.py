@@ -30,6 +30,7 @@ def has_cycle(head: ListNode) -> Optional[ListNode]:
             while it is not cycle_len_advanced_iter:
                 it = it.next
                 cycle_len_advanced_iter = cycle_len_advanced_iter.next
+            print(it.data)
             return it  # iter is the start of cycle.
     return None  # No cycle.
 

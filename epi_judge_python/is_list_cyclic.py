@@ -8,11 +8,23 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def has_cycle(head: ListNode) -> Optional[ListNode]:
-    dhead = head
-    while dhead.next and dhead.next.next:
-        head = head.next
-        dhead = dhead.next.next
-        if head is dhead: return head
+    fast = slow = head
+    while fast.next and fast.next.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow is fast: # cycle found
+            # find length of cycle
+            cycle_len = 1
+            while slow.next is not fast:
+                slow = slow.next
+                cycle_len += 1
+            cycle_start = head
+            for _ in range(cycle_len):
+                cycle_start = cycle_start.next
+            while head is not cycle_start:
+                head = head.next
+                cycle_start = cycle_start.next
+            return cycle_start
     return None
 
 
