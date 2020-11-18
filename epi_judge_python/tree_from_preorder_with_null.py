@@ -5,10 +5,27 @@ from binary_tree_node import BinaryTreeNode
 from test_framework import generic_test
 from test_framework.test_utils import enable_executor_hook
 
-
 def reconstruct_preorder(preorder: List[int]) -> BinaryTreeNode:
-    # TODO - you fill in here.
-    return BinaryTreeNode()
+    class Helper:
+        """ Class to allow for static variable i to be used through recursive calls
+            Apparently classes are the correct/only way to have static variables
+        """
+        def __init__(self, i):
+            self.i = i
+
+        def __call__(self):
+            node = None
+            if self.i < len(preorder):
+                self.i += 1
+                if preorder[self.i-1]:
+                    node = BinaryTreeNode(preorder[self.i-1])
+                    node.left = self.__call__()
+                    node.right = self.__call__()
+
+            return node
+    
+    ans = Helper(0)
+    return ans()
 
 
 @enable_executor_hook
