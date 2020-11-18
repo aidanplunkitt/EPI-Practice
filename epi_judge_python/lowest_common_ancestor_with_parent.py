@@ -10,8 +10,27 @@ from test_framework.test_utils import enable_executor_hook
 
 def lca(node0: BinaryTreeNode,
         node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
-    # TODO - you fill in here.
-    return None
+    path0, path1 = [], []
+
+    n = node0
+    while True:
+        path0.append(n)
+        if not n.parent: break
+        n = n.parent
+    n = node1
+    while True:
+        path1.append(n)
+        if not n.parent: break
+        n = n.parent
+
+    path0.reverse()
+    path1.reverse()
+
+    i = 0
+    for i in range(min(len(path0), len(path1))):
+        if path0[i] is not path1[i]: return path0[i-1]
+
+    return path0[i]
 
 
 @enable_executor_hook
