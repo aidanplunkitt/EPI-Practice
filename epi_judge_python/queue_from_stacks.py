@@ -5,19 +5,12 @@ from test_framework.test_failure import TestFailure
 class Queue:
     def __init__(self):
         self.pushstack, self.popstack = [], []
-        self.popped_last = False
 
     def enqueue(self, x: int) -> None:
-        if self.popped_last:
-            self.popped_last = False
-            while self.popstack:
-                self.pushstack.append(self.popstack.pop())
-
         self.pushstack.append(x)
 
     def dequeue(self) -> int:
-        if not self.popped_last:
-            self.popped_last = True
+        if not self.popstack:
             while self.pushstack:
                 self.popstack.append(self.pushstack.pop())
 
