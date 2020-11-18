@@ -3,13 +3,28 @@ from test_framework.test_failure import TestFailure
 
 
 class Queue:
+    def __init__(self):
+        self.pushstack, self.popstack = [], []
+        self.popped_last = False
+
     def enqueue(self, x: int) -> None:
-        # TODO - you fill in here.
-        return
+        if self.popped_last:
+            self.popped_last = False
+            while self.popstack:
+                self.pushstack.append(self.popstack.pop())
+
+        self.pushstack.append(x)
 
     def dequeue(self) -> int:
-        # TODO - you fill in here.
-        return 0
+        if not self.popped_last:
+            self.popped_last = True
+            while self.pushstack:
+                self.popstack.append(self.pushstack.pop())
+
+        if not self.popstack:
+            raise IndexError("Can't pop from empty queue")
+
+        return self.popstack.pop()
 
 
 def queue_tester(ops):
