@@ -21,5 +21,6 @@ TODO
     5.17
     5.9 p^2 solution
     6.2 rewrite construct_from_base iteratively rather than recursively
+    8.7 circular queue implementation
     all C4 problems
     then remaining problems from each chapter
