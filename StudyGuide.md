@@ -24,4 +24,5 @@ TODO
     8.7 circular queue implementation
     all C4 problems
     then remaining problems from each chapter
+    Extra preorder/inorder/postorder tree traversal problems, with different time/space constraints, w/ and w/o parent pointers
     Pull request to fix inconsistencies between 6.7/9.8/12.12/15.2/24.13 in EPIjudge index.html and book
