@@ -1136,7 +1136,7 @@ problem_mapping = {
                 "total": 3852
             },
             "Python: tree_with_parent_inorder.py": {
-                "passed": 3852,
+                "passed": 3851,
                 "total": 3852
             }
         },

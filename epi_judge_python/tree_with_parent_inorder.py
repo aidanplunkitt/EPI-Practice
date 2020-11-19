@@ -5,25 +5,29 @@ from test_framework import generic_test
 
 
 def inorder_traversal(tree: BinaryTreeNode) -> List[int]:
-    traversal = []
-    prev = None
-    while tree:
-        if prev is tree.parent:
-            if tree.left:
-                next = tree.left
-            else:
-                traversal.append(tree.data)
-                next = tree.right or tree.parent
+    def find_successor(node):
+        if node.right:
+            node = node.right
+            while node.left:
+                node = node.left
+            return node
 
-        elif prev is tree.left:
-            traversal.append(tree.data)
-            next = tree.right or tree.parent
-        else: # prev == tree.right
-            next = tree.parent
+        while node.parent and node.parent.right is node:
+            node = node.parent
 
-        prev, tree = tree, next
+        return node.parent
 
-    return traversal
+    # set tree to first elem in traversal
+    while tree.left:
+        tree = tree.left
+
+    trav = []
+    while True:
+        trav.append(tree.data)
+        tree = find_successor(tree)
+        if not tree: break
+
+    return trav
 
 
 if __name__ == '__main__':
