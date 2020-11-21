@@ -5,6 +5,8 @@ from typing import Iterator, List
 from test_framework import generic_test
 from test_framework.test_utils import enable_executor_hook
 
+import itertools
+import heapq
 
 class Star:
     def __init__(self, x: float, y: float, z: float) -> None:
@@ -26,11 +28,19 @@ class Star:
     def __eq__(self, rhs):
         return math.isclose(self.distance, rhs.distance)
 
-
+# 10.4, O(n log k) time, O(k) space
 def find_closest_k_stars(stars: Iterator[Star], k: int) -> List[Star]:
-    # TODO - you fill in here.
-    return []
+    # negate entries to turn python heapq minheap into maxheap, to quickly retrieve the largest of the k mins for comparison
+    starheap = [(s.distance * -1.0, s) for s in itertools.islice(stars, k)]
+    heapq.heapify(starheap)
 
+    for s in stars:
+        # only do log k heap push work when a new k-min is actually found
+        if s.distance < (starheap[0][0] * -1.0):
+            heapq.heappushpop(starheap, (s.distance * -1.0, s))
+
+    ans = [s for _, s in starheap]
+    return ans[::-1]
 
 def comp(expected_output, output):
     if len(output) != len(expected_output):
