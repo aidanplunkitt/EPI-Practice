@@ -25,6 +25,7 @@ TODO
     all C4 problems
     then remaining problems from each chapter
     Extra preorder/inorder/postorder tree traversal problems, with different time/space constraints, w/ and w/o parent pointers
+    Binary search edge cases
     Memorize python builtin APIs (e.g. list append() vs extend()) and imports from the standard lib (itertools, collections, heapq) that are appropriate to each data structure or topic before doing the rest of the problems from the corresponding chapters
     Pull request to fix inconsistencies between 6.7/9.8/12.12/15.2/24.13 in EPIjudge index.html and book
 
