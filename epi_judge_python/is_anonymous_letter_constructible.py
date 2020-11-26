@@ -2,17 +2,12 @@ from test_framework import generic_test
 
 import collections
 
-# 12.2, O(n + m) time, O(m) space
+# 12.2, O(n + m) time, O(n + m) space
 def is_letter_constructible_from_magazine(letter_text: str,
                                           magazine_text: str) -> bool:
-    magazine_chars = collections.Counter(magazine_text)
-
-    for c in letter_text:
-        if not magazine_chars[c]:
-            return False
-        magazine_chars[c] -= 1
-
-    return True
+    # subtracting collection.Counters returns a dict containing any positive differences
+    # thus if letter_text has any surplus chars after subtracting magazine_text, we know magazine doesn't have all required chars
+    return not (collections.Counter(letter_text) - collections.Counter(magazine_text))
 
 
 if __name__ == '__main__':
