@@ -28,5 +28,6 @@ TODO
     Binary search edge cases
     Memorize python builtin APIs (e.g. list append() vs extend()) and imports from the standard lib (itertools, collections, heapq) that are appropriate to each data structure or topic before doing the rest of the problems from the corresponding chapters
     Pull request to fix inconsistencies between 6.7/9.8/12.12/15.2/24.13 in EPIjudge index.html and book
+    Also notify that 12.5 is listed twice in study guide in book
 
     git diff master epi_judge_python/
