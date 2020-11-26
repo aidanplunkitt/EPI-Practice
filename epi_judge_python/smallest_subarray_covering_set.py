@@ -8,11 +8,23 @@ from test_framework.test_utils import enable_executor_hook
 
 Subarray = collections.namedtuple('Subarray', ('start', 'end'))
 
-
+# 12.6, O(n) time (single pass), O(k) space (relative to size of keywords set)
 def find_smallest_subarray_covering_set(paragraph: List[str],
                                         keywords: Set[str]) -> Subarray:
-    # TODO - you fill in here.
-    return Subarray(0, 0)
+    min_len = float('inf')
+    ret_val = Subarray(0, 0)
+    d = {k: float('inf') for k in keywords}
+    for i, word in enumerate(paragraph):
+        if word in d:
+            d[word] = i
+            last_indices = list(d.values())
+            if sum(last_indices) < float('inf'):
+                enclosure_len = i - min(last_indices)
+                if enclosure_len < min_len:
+                    min_len = enclosure_len
+                    ret_val = Subarray(i - enclosure_len, i)
+
+    return ret_val
 
 
 @enable_executor_hook
