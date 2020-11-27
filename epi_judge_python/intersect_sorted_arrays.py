@@ -2,22 +2,15 @@ from typing import List
 
 from test_framework import generic_test
 
-# 13.1, O(min(A, B)) time, O(intersection(A, B)) space
-def intersect_two_sorted_arrays(A: List[int], B: List[int]) -> List[int]:
-    a = b = 0
-    intersection = []
-    while a < len(A) and b < len(B):
-        if A[a] == B[b]:
-            # only need to eliminate duplicates in one input array in order to prevent them from appearing in output array
-            if a == 0 or A[a] != A[a-1]:
-                intersection.append(A[a])
-            a, b = a+1, b+1
-        elif A[a] < B[b]:
-            a += 1
-        else:
-            b += 1
+import bisect
 
-    return intersection 
+# 13.1, O(A log B) time, O(intersection(A, B)) space
+def intersect_two_sorted_arrays(A: List[int], B: List[int]) -> List[int]:
+    def in_array(arr, elem):
+        i = bisect.bisect_left(arr, elem)
+        return i < len(arr) and elem == arr[i]
+
+    return [a for i, a in enumerate(A) if (i == 0 or a != A[i-1]) and in_array(B, a)] 
 
 
 if __name__ == '__main__':
