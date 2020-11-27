@@ -22,6 +22,7 @@ TODO
     5.9 p^2 solution
     6.2 rewrite construct_from_base iteratively rather than recursively
     8.7 circular queue implementation
+    12.6 book implementations
     all C4 problems
     then remaining problems from each chapter
     Extra preorder/inorder/postorder tree traversal problems, with different time/space constraints, w/ and w/o parent pointers
