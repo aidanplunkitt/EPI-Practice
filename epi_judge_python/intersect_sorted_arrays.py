@@ -8,16 +8,13 @@ def intersect_two_sorted_arrays(A: List[int], B: List[int]) -> List[int]:
     intersection = []
     while a < len(A) and b < len(B):
         if A[a] == B[b]:
-            intersection.append(A[a])
+            # only need to eliminate duplicates in one input array in order to prevent them from appearing in output array
+            if a == 0 or A[a] != A[a-1]:
+                intersection.append(A[a])
             a, b = a+1, b+1
         elif A[a] < B[b]:
             a += 1
         else:
-            b += 1
-
-        while a > 0 and a < len(A) and A[a] == A[a-1]:
-            a += 1
-        while b > 0 and b < len(B) and B[b] == B[b-1]:
             b += 1
 
     return intersection 
