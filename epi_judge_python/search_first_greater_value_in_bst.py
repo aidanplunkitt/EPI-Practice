@@ -3,10 +3,15 @@ from typing import Optional
 from bst_node import BstNode
 from test_framework import generic_test
 
-
+# 14.2, O(h) time (O(log n) avg, O(n) worst-case), O(1) space
 def find_first_greater_than_k(tree: BstNode, k: int) -> Optional[BstNode]:
-    # TODO - you fill in here.
-    return None
+    last = BstNode(-1)
+    while tree:
+        if tree.data > k:
+            last, tree = tree, tree.left
+        else:
+            tree = tree.right
+    return last
 
 
 def find_first_greater_than_k_wrapper(tree, k):
