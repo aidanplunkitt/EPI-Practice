@@ -3,32 +3,17 @@ from typing import List
 from bst_node import BstNode
 from test_framework import generic_test, test_utils
 
-# 14.3, O(n) time, O(1) space
+# 14.3, O(h + k) time, O(h) space
 def find_k_largest_in_bst(tree: BstNode, k: int) -> List[int]:
-    def get_next(node):
-        if node.left:
-            node = node.left
-            while node.right:
-                node = node.right
-            return node
+    def helper(tree):
+        if tree and len(largest) < k:
+            helper(tree.right)
+            if len(largest) < k:
+                largest.append(tree.data)
+                helper(tree.left)
 
-        while node.parent and node.parent.left is node:
-            node = node.parent
-        return node.parent
-
-    if not tree: return []
-
-    # start at max
-    while tree.right:
-        tree = tree.right
-
-    # reverse in-order walk
     largest = []
-    for _ in range(k):
-        largest.append(tree.data)
-        tree = get_next(tree)
-        if not tree: break
-
+    helper(tree)
     return largest
 
 
