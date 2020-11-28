@@ -1,18 +1,32 @@
 from binary_tree_node import BinaryTreeNode
 from test_framework import generic_test
 
-# 14.1, O(n) time, O(height) callstack space (height == n in worst case)
+# 14.1, O(n) time, O(1) space
 def is_binary_tree_bst(tree: BinaryTreeNode) -> bool:
-    def helper(tree, lower_limit=float("-inf"), upper_limit=float("inf")):
-        if not tree: 
-            return True
+    def next_node(node):
+        if node.right:
+            node = node.right
+            while node.left:
+                node = node.left
+            return node
 
-        if not lower_limit <= tree.data <= upper_limit: 
-            return False
+        while node.parent and node.parent.right is node:
+            node = node.parent
+        return node.parent
 
-        return helper(tree.left, lower_limit, tree.data) and helper(tree.right, tree.data, upper_limit)
-        
-    return helper(tree)
+    if not tree: return True
+
+    # go to smallest node
+    while tree.left:
+        tree = tree.left
+
+    # walk tree checking that it's sorted
+    while True:
+        last_val, tree = tree.data, next_node(tree)
+        if not tree: break
+        if tree.data < last_val: return False
+
+    return True
 
 if __name__ == '__main__':
     exit(
