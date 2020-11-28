@@ -1,32 +1,27 @@
 from binary_tree_node import BinaryTreeNode
 from test_framework import generic_test
 
-# 14.1, O(n) time, O(1) space
+import collections
+
+# 14.1, O(n) time, O(n) space
 def is_binary_tree_bst(tree: BinaryTreeNode) -> bool:
-    def next_node(node):
-        if node.right:
-            node = node.right
-            while node.left:
-                node = node.left
-            return node
-
-        while node.parent and node.parent.right is node:
-            node = node.parent
-        return node.parent
-
     if not tree: return True
+    
+    q = collections.deque()
+    q.append((tree,(float('-inf'), float('inf'))))
 
-    # go to smallest node
-    while tree.left:
-        tree = tree.left
-
-    # walk tree checking that it's sorted
-    while True:
-        last_val, tree = tree.data, next_node(tree)
-        if not tree: break
-        if tree.data < last_val: return False
+    # BFS
+    while q:
+        node = q.popleft()            
+        if not node[1][0] <= node[0].data <= node[1][1]:
+            return False
+        if node[0].left:
+            q.append((node[0].left, (node[1][0], node[0].data)))
+        if node[0].right:
+            q.append((node[0].right, (node[0].data, node[1][1])))
 
     return True
+
 
 if __name__ == '__main__':
     exit(
