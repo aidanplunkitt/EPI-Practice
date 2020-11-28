@@ -4,16 +4,18 @@ from test_framework import generic_test, test_utils
 
 # 15.3, O(n*n!) time, O(n^2) space?
 def permutations(A: List[int]) -> List[List[int]]:
-    def helper(elems, perms):
-        if not elems:
-            permutations.append(perms)
+    def helper(i):
+        if i == len(A) - 1:
+            permutations.append(A.copy())
             return
 
-        for i, a in enumerate(elems):
-            helper(elems[:i] + elems[i+1:], perms + [a])
+        for j in range(i, len(A)):
+            A[i], A[j] = A[j], A[i]
+            helper(i + 1)
+            A[j], A[i] = A[i], A[j]
 
     permutations = []
-    helper(A, [])
+    helper(0)
     return permutations
 
 
