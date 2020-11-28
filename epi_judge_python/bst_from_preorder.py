@@ -3,29 +3,25 @@ from typing import List, Optional
 from bst_node import BstNode
 from test_framework import generic_test
 
-# 14.5, O(n^2) time, O(n) space
+# 14.5, O(n) time, O(n) space
 def rebuild_bst_from_preorder(preorder_sequence: List[int]
                               ) -> Optional[BstNode]:
-    if not preorder_sequence: return None
-    root = BstNode(preorder_sequence[0])
-    for i in range(1, len(preorder_sequence)):
-        node = prev_node = root
-        val = preorder_sequence[i]
-        left = val < node.data
-        while node:
-            prev_node = node
-            if val < node.data:
-                node, left = node.left, True
-            else:
-                node, left = node.right, False
-        new_node = BstNode(val)
-        if left:
-            prev_node.left  = new_node
-        else:
-            prev_node.right = new_node
+    def rebuild_bst_from_preorder_on_value_range(lower_bound, upper_bound):
+        if root_idx[0] == len(preorder_sequence):
+            return None
 
-    return root
+        root = preorder_sequence[root_idx[0]]
+        if not lower_bound <= root <= upper_bound:
+            return None
+        root_idx[0] += 1
 
+        left_subtree = rebuild_bst_from_preorder_on_value_range(lower_bound, root)
+        right_subtree = rebuild_bst_from_preorder_on_value_range(root, upper_bound)
+        return BstNode(root, left_subtree, right_subtree)
+
+    # use array as functionally static variable, as python will pass by reference rather than value
+    root_idx = [0]
+    return rebuild_bst_from_preorder_on_value_range(float('-inf'), float('inf'))
 
 
 if __name__ == '__main__':
