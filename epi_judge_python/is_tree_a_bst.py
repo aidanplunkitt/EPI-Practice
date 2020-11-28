@@ -1,28 +1,18 @@
 from binary_tree_node import BinaryTreeNode
 from test_framework import generic_test
 
-# 14.1, O(n) time, O(height) callstack space (height == n in worst case) + O(n) space to cache the min/maxes at each node
+# 14.1, O(n) time, O(height) callstack space (height == n in worst case)
 def is_binary_tree_bst(tree: BinaryTreeNode) -> bool:
-    def helper(tree):
-        is_bst = True
-        maxval = minval = tree.data
-        if tree.left:
-            is_bst, leftmin, leftmax = helper(tree.left)
-            if not is_bst or leftmax > tree.data:
-                return False, None, None
-            minval, maxval = min(minval, leftmin), max(maxval, leftmax)
+    def helper(tree, lower_limit=float("-inf"), upper_limit=float("inf")):
+        if not tree: 
+            return True
 
-        if tree.right:
-            is_bst, rightmin, rightmax = helper(tree.right)
-            if not is_bst or rightmin < tree.data:
-                return False, None, None
-            minval, maxval = min(minval, rightmin), max(maxval, rightmax)
+        if not lower_limit <= tree.data <= upper_limit: 
+            return False
 
-        return is_bst, minval, maxval
-
-    is_bst, _, _ = helper(tree)
-    return is_bst
-
+        return helper(tree.left, lower_limit, tree.data) and helper(tree.right, tree.data, upper_limit)
+        
+    return helper(tree)
 
 if __name__ == '__main__':
     exit(
