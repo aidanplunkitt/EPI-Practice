@@ -7,11 +7,20 @@ from test_framework.test_utils import enable_executor_hook
 
 NUM_PEGS = 3
 
-
+# 15.1, O(2^n) time, O(n) space
 def compute_tower_hanoi(num_rings: int) -> List[List[int]]:
-    # TODO - you fill in here.
-    return []
+    def helper(num_rings, from_peg, to_peg, use_peg):
+        if num_rings > 0:
+            helper(num_rings - 1, from_peg, use_peg, to_peg)
+            pegs[to_peg].append(pegs[from_peg].pop())
+            result.append([from_peg, to_peg])
+            helper(num_rings - 1, use_peg, to_peg, from_peg)
 
+    result = []
+    pegs = [[i for i in range(num_rings, 0, -1)]] + [[] for _ in range(NUM_PEGS - 1)]
+    print(pegs)
+    helper(num_rings, 0, 1, 2)
+    return result
 
 @enable_executor_hook
 def compute_tower_hanoi_wrapper(executor, num_rings):
