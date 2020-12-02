@@ -24,6 +24,7 @@ TODO
     8.7 circular queue implementation
     12.6 book implementations
     Do all 15.1 tower of hanoi variants
+    Solve 15.4 power set problem using non-recursive subset indices generation (math.log2())
     all C4 problems
     then remaining problems from each chapter
     Extra preorder/inorder/postorder tree traversal problems, with different time/space constraints, w/ and w/o parent pointers
