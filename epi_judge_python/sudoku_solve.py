@@ -7,11 +7,65 @@ from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
-
+# 15.9
 def solve_sudoku(partial_assignment: List[List[int]]) -> bool:
-    # TODO - you fill in here.
-    return True
+    def row_solution(row, col):
+        #row, col = coordinate
+        nums = set(range(1, 10))
+        sum = 0
+        for i, c in enumerate(partial_assignment[row]):
+            if i != col:
+                if c not in nums:
+                    return False
+                nums.remove(c)
+                sum += c
+        
+        partial_assignment[row][col] = 45 - sum
+        return True
 
+    def col_solution(row, col):
+        #row, col = coordinate
+        transposed = [[r[i] for r in partial_assignment] for i in range(len(partial_assignment))]        
+        
+        nums = set(range(1, 10))
+        sum = 0
+        for i, c in enumerate(transposed[col]):
+            if i != col:
+                if c not in nums:
+                    return False
+                nums.remove(c)
+                sum += c
+        
+        partial_assignment[row][col] = 45 - sum
+        return True
+
+    def matrix_solution(row, col):
+        tl_row, tl_col = ((row // 3) * 3, (col // 3) * 3)
+        nums = set(range(1,10))
+        sum = 0
+        for i in range(tl_row, tl_row + 3):
+            for j in range(tl_col, tl_col + 3):
+                if (i, j) != (row, col):
+                    val = partial_assignment[i][j]
+                    if val not in nums:
+                        return False
+                    nums.remove(val)
+                    sum += val
+        
+        partial_assignment[row][col] = 45 - sum
+        return True
+
+    
+    unsolved = [(i, j) for i, row in enumerate(partial_assignment) for j, val in enumerate(row) if val == 0]
+    solveable = True
+    while unsolved and solveable:
+        solveable = False
+        for coordinate in unsolved:
+            if row_solution(*coordinate) or col_solution(*coordinate) or matrix_solution(*coordinate):
+                solveable = True
+                unsolved.remove(coordinate)
+
+    return solveable
 
 def assert_unique_seq(seq):
     seen = set()
