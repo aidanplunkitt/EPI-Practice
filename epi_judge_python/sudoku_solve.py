@@ -7,65 +7,46 @@ from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
-# 15.9
+# 15.9, exponential runtime ?, O(n) callstack space where n is num of empty entries in sudoku puzzle
 def solve_sudoku(partial_assignment: List[List[int]]) -> bool:
-    def row_solution(row, col):
-        #row, col = coordinate
-        nums = set(range(1, 10))
-        sum = 0
-        for i, c in enumerate(partial_assignment[row]):
-            if i != col:
-                if c not in nums:
+    def is_valid(val, i, j):
+        # check row
+        for entry in partial_assignment[i]:
+            if entry == val: return False
+
+        # check column
+        for row in partial_assignment:
+            if row[j] == val: return False
+
+        # check matrix
+        x, y = i // 3 * 3, j // 3 * 3
+        for a in range(3):
+            for b in range(3):
+                if partial_assignment[x + a][y + b] == val:
                     return False
-                nums.remove(c)
-                sum += c
-        
-        partial_assignment[row][col] = 45 - sum
+                
         return True
 
-    def col_solution(row, col):
-        #row, col = coordinate
-        transposed = [[r[i] for r in partial_assignment] for i in range(len(partial_assignment))]        
-        
-        nums = set(range(1, 10))
-        sum = 0
-        for i, c in enumerate(transposed[col]):
-            if i != col:
-                if c not in nums:
-                    return False
-                nums.remove(c)
-                sum += c
-        
-        partial_assignment[row][col] = 45 - sum
-        return True
+    def solve_partial(i, j):
+        if j == 9:
+            i, j = i + 1, 0
+            if i == 9:
+                return True
 
-    def matrix_solution(row, col):
-        tl_row, tl_col = ((row // 3) * 3, (col // 3) * 3)
-        nums = set(range(1,10))
-        sum = 0
-        for i in range(tl_row, tl_row + 3):
-            for j in range(tl_col, tl_col + 3):
-                if (i, j) != (row, col):
-                    val = partial_assignment[i][j]
-                    if val not in nums:
-                        return False
-                    nums.remove(val)
-                    sum += val
-        
-        partial_assignment[row][col] = 45 - sum
-        return True
+        if partial_assignment[i][j] != 0:
+            return solve_partial(i, j + 1)
 
-    
-    unsolved = [(i, j) for i, row in enumerate(partial_assignment) for j, val in enumerate(row) if val == 0]
-    solveable = True
-    while unsolved and solveable:
-        solveable = False
-        for coordinate in unsolved:
-            if row_solution(*coordinate) or col_solution(*coordinate) or matrix_solution(*coordinate):
-                solveable = True
-                unsolved.remove(coordinate)
+        # handle empty square
+        for val in range(1,10):
+            if is_valid(val, i, j):
+                partial_assignment[i][j] = val
+                if solve_partial(i, j + 1):
+                    return True
+        partial_assignment[i][j] = 0
+        return False
 
-    return solveable
+
+    return solve_partial(0,0)
 
 def assert_unique_seq(seq):
     seen = set()
