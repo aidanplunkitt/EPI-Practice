@@ -34,3 +34,4 @@ TODO
     Also notify that 12.5 is listed twice in study guide in book
 
     git diff master epi_judge_python/
+    git log -p master..progress epi_judge_python/
