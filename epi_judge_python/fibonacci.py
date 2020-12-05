@@ -1,9 +1,14 @@
 from test_framework import generic_test
 
+import functools
 
+# 16.0, O(n) time, O(n) space for cache
+@functools.lru_cache(None)
 def fibonacci(n: int) -> int:
-    # TODO - you fill in here.
-    return -1
+    if n < 2:
+        return n
+
+    return fibonacci(n-1) + fibonacci(n-2)
 
 
 if __name__ == '__main__':
