@@ -7,21 +7,20 @@ from test_framework.test_utils import enable_executor_hook
 
 Item = collections.namedtuple('Item', ('weight', 'value'))
 
-
+# 16.6, O(mn) time and space
 def optimum_subject_to_capacity(items: List[Item], capacity: int) -> int:
-    items.sort(key=lambda item: item[1] / item[0], reverse=True)
-
-    def helper(weight, index):
-        if weight == 0: return 0
-
-        while items[index][0] > weight:
-            index += 1
-            if index == len(items): return 0
-
-        return items[index][1] + helper(weight - items[index][0], index + 1)
+    cache = [[0] * len(items) for _ in range(capacity + 1)]
+    def helper(cap, index):
+        if index == len(items):
+            return 0
+        if val := cache[cap][index]:
+            return val
+        without_item = helper(cap, index + 1)
+        with_item = 0 if cap < items[index].weight else helper(cap - items[index].weight, index + 1) + items[index].value
+        cache[cap][index] = max(without_item, with_item)
+        return cache[cap][index]
 
     return helper(capacity, 0)
-
 
 
 @enable_executor_hook
