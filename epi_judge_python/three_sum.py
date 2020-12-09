@@ -2,10 +2,18 @@ from typing import List
 
 from test_framework import generic_test
 
-
+# 17.4, O(n^2) time, O(n) space
 def has_three_sum(A: List[int], t: int) -> bool:
-    # TODO - you fill in here.
-    return True
+    nums = set()
+    for a in A:
+        nums.add(t - a)
+
+    for i in range(len(A)):
+        for j in range(i, len(A)):
+            if (A[i] + A[j]) in nums:
+                return True
+            
+    return False
 
 
 if __name__ == '__main__':
