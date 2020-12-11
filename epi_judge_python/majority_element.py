@@ -2,10 +2,22 @@ from typing import Iterator
 
 from test_framework import generic_test
 
+import collections
 
+# 17.5 Find majority element, O(n) time, O(1) space
 def majority_search(stream: Iterator[str]) -> str:
-    # TODO - you fill in here.
-    return ''
+    majority = next(stream)
+    count = 1
+    for i, s in enumerate(stream):
+        # i + 2 + 1
+        # +2 because starting on second element in stream
+        # +1 because we want to round up on odd elements // 2
+        if count < (i + 3) // 2:
+            majority = s
+        if s == majority:
+            count += 1
+
+    return majority
 
 
 def majority_search_wrapper(stream):
