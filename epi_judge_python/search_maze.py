@@ -8,14 +8,39 @@ from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
 WHITE, BLACK = range(2)
+DIRECTIONS = [(0,1), (0,-1), (1,0), (-1,0)]
 
 Coordinate = collections.namedtuple('Coordinate', ('x', 'y'))
 
-
+# 18.1 O((nm)!) time?, O(nm) space for cache / callstack
 def search_maze(maze: List[List[int]], s: Coordinate,
                 e: Coordinate) -> List[Coordinate]:
-    # TODO - you fill in here.
-    return []
+    tried = [[False] * len(maze[0]) for _ in maze]
+    def dfs(v, seen):
+        if v == e:
+            return [e]
+
+        i, j = v
+        if tried[i][j]: return []
+
+        neighbors = [Coordinate(i + dx, j + dy) \
+            for dx, dy in DIRECTIONS \
+                if (0 <= i + dx < len(maze) and 0 <= j + dy < len(maze[0])) \
+                    and maze[i+dx][j+dy] is WHITE \
+                    and Coordinate(i+dx, j+dy) not in seen]
+
+        for n in neighbors:
+            if path := dfs(n, seen | {n}):
+                return path + [v]
+        
+        tried[i][j] = True
+        return []
+  
+    seen = set([s])
+    path = dfs(s, seen)[::-1]
+    return path
+
+
 
 
 def path_element_is_feasible(maze, prev, cur):
