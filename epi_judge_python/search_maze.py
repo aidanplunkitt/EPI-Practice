@@ -15,29 +15,28 @@ Coordinate = collections.namedtuple('Coordinate', ('x', 'y'))
 # 18.1 O((nm)!) time?, O(nm) space for cache / callstack
 def search_maze(maze: List[List[int]], s: Coordinate,
                 e: Coordinate) -> List[Coordinate]:
-    tried = [[False] * len(maze[0]) for _ in maze]
-    def dfs(v, seen):
+    def dfs(v):
+        path.append(v)
+
         if v == e:
-            return [e]
+            return True
 
         i, j = v
-        if tried[i][j]: return []
-
         neighbors = [Coordinate(i + dx, j + dy) \
             for dx, dy in DIRECTIONS \
                 if (0 <= i + dx < len(maze) and 0 <= j + dy < len(maze[0])) \
-                    and maze[i+dx][j+dy] is WHITE \
-                    and Coordinate(i+dx, j+dy) not in seen]
+                    and maze[i+dx][j+dy] is WHITE]
 
         for n in neighbors:
-            if path := dfs(n, seen | {n}):
-                return path + [v]
+            maze[n.x][n.y] = BLACK
+            if dfs(n):
+                return True
         
-        tried[i][j] = True
-        return []
+        del path[-1]
+        return False
   
-    seen = set([s])
-    path = dfs(s, seen)[::-1]
+    path = []
+    dfs(s)
     return path
 
 
