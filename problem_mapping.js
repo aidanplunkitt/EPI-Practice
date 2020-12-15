@@ -2550,7 +2550,7 @@ problem_mapping = {
                 "total": 48
             },
             "Python: string_transformability.py": {
-                "passed": 0,
+                "passed": 48,
                 "total": 48
             }
         },
