@@ -2,20 +2,26 @@ from test_framework import generic_test
 
 
 def levenshtein_distance(A: str, B: str) -> int:
-    dp = [[0 for _ in range(len(B) + 1)] for _ in range(len(A) + 1)]
-    dp[0] = [n for n in range(len(B) + 1)]
+    # ensure O(min(A,B)) space
+    if len(A) < len(B):
+        A, B = B, A
 
-    for i in range(1, len(dp)):
-        for j in range(len(dp[0])):
-            if j == 0:
-                dp[i][j] = i
+    # initialize first row
+    last = [n for n in range(len(B) + 1)]
+
+    for i in range(1, len(A) + 1):
+        curr = [0 for _ in range(len(B) + 1)]
+        # initialize first col
+        curr[0] = i
+        for j in range(1, len(curr)):
+            if A[i-1] == B[j-1]:
+                curr[j] = last[j-1]
             else:
-                if A[i-1] == B[j-1]:
-                    dp[i][j] = dp[i-1][j-1]
-                else:
-                    dp[i][j] = min(dp[i][j-1], dp[i-1][j], dp[i-1][j-1]) + 1
+                curr[j] = min(curr[j-1], last[j], last[j-1]) + 1
 
-    return dp[-1][-1]
+        last = curr
+
+    return curr[-1]
 
 
 if __name__ == '__main__':
