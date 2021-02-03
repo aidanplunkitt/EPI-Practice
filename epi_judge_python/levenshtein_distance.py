@@ -7,21 +7,24 @@ def levenshtein_distance(A: str, B: str) -> int:
         A, B = B, A
 
     # initialize first row
-    last = [n for n in range(len(B) + 1)]
+    dp = [n for n in range(len(B) + 1)]
 
     for i in range(1, len(A) + 1):
-        curr = [0 for _ in range(len(B) + 1)]
         # initialize first col
-        curr[0] = i
-        for j in range(1, len(curr)):
+        diag = dp[0]
+        dp[0] = i
+        for j in range(1, len(dp)):
+            up, left = dp[j], dp[j-1]
             if A[i-1] == B[j-1]:
-                curr[j] = last[j-1]
+                # curr[j] = last[j-1]
+                dp[j] = diag
             else:
-                curr[j] = min(curr[j-1], last[j], last[j-1]) + 1
+                # curr[j] = min(curr[j-1], last[j], last[j-1]) + 1
+                dp[j] = min(up, left, diag) + 1
 
-        last = curr
+            diag = up
 
-    return curr[-1]
+    return dp[-1]
 
 
 if __name__ == '__main__':
